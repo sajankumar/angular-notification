@@ -4,7 +4,9 @@ var gulp = require('gulp'),
     minifyCss = require('gulp-clean-css'),
     pump = require('pump'),
     karma = require('karma').Server,
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    docs = require('gulp-ngdocs');
+
 
 var devTasks = { 
     sassProcess: function () {
@@ -38,6 +40,11 @@ var prodTasks = {
         .pipe(minifyCss())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('dist'));
+    },
+    generateDocs: function () {
+        return gulp.src('./src/riNotification.js')
+        .pipe(docs.process({html5Mode: false}))
+        .pipe(gulp.dest('./docs'));
     }
 };
 gulp.task('watch:sass', devTasks.watchSass);
@@ -50,6 +57,7 @@ gulp.task('deploy:dev', ['watch:sass', 'karma:single']);
 /*production build */
 gulp.task('prod:compressJS', prodTasks.compressJS);
 gulp.task('prod:cleanCss', prodTasks.cleanCss);
+gulp.task('prod:docs', prodTasks.generateDocs);
 
-gulp.task('production', ['build:sass', 'prod:cleanCss', 'prod:compressJS']);
+gulp.task('production', ['build:sass', 'prod:cleanCss', 'prod:compressJS', 'prod:docs']);
 
