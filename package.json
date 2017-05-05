@@ -1,0 +1,44 @@
+{
+  "name": "rinotification",
+  "version": "1.0.0",
+  "description": "Angular.js service providing simple notifications with css transitions for animating",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sajankumar/angular-notification.git"
+  },
+  "keywords": [
+    "angular",
+    "notification",
+    "notifiy",
+    "bulma"
+  ],
+  "author": "sajankumar vijayan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sajankumar/angular-notification/issues"
+  },
+  "homepage": "https://github.com/sajankumar/angular-notification#readme",
+  "devDependencies": {
+    "angular": "^1.6.4",
+    "angular-mocks": "^1.6.4",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-karma-runner": "^1.2.0",
+    "gulp-ngdocs": "^0.3.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^2.1.2",
+    "jasmine-core": "^2.6.1",
+    "karma": "^1.6.0",
+    "karma-chrome-launcher": "^2.1.0",
+    "karma-jasmine": "^1.1.0",
+    "pump": "^1.0.2"
+  },
+  "dependencies": {
+    "bulma": "^0.4.1"
+  }
+}
