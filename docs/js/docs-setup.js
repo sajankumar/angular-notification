@@ -5,12 +5,21 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
-      "id": "riNotification",
-      "shortName": "riNotification",
+      "id": "ri.notify",
+      "shortName": "ri.notify",
       "type": "overview",
-      "moduleName": "riNotification",
-      "shortDescription": "riNotification Component",
-      "keywords": "api component content creating docs html inside layout ll notification overview responsible rinotification rx-page view website wrap"
+      "moduleName": "ri.notify",
+      "shortDescription": "ri.notify module providing the NotificationProvider for simple notifications.",
+      "keywords": "angular api module myapp notificationprovider notifications notify overview providing ri simple"
+    },
+    {
+      "section": "api",
+      "id": "ri.notify.NotificationProvider",
+      "shortName": "ri.notify.NotificationProvider",
+      "type": "service",
+      "moduleName": "ri.notify",
+      "shortDescription": "Simply inject this Notification on the controller",
+      "keywords": "allows angular api args category config configure controller customization function inject mainctrl method module myapp notification notificationprovider notify object pass public ri service simply stuff type"
     }
   ],
   "apis": {

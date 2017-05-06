@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ri.notify module demo</title>
+	<link rel="stylesheet" type="text/css" href="../dist/build.css">
+</head>
+<body ng-app="myApp">
+<div ng-controller="mainCtrl">
+	
+</div>
+
+<script src="js/angular.min.js"></script>
+<script src="../dist/riNotification.js"></script>
+
+<script>
+	angular.module('myApp', ['ri.notify'])
+	.controller('mainCtrl', function (Notification) {
+		console.log(Notification)
+
+		Notification.info({message: 'I am info', title: 'I am a title'});
+		Notification.warning({message: 'I am warning', title: 'I am a title'});
+		Notification.error({message: 'I am error', title: 'I am a title'});
+	});
+
+</script>
+</body>
+</html>

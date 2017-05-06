@@ -27,7 +27,9 @@
     "angular-mocks": "^1.6.4",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.0.4",
+    "gulp-concat-css": "^2.3.0",
     "gulp-karma-runner": "^1.2.0",
+    "gulp-less": "^3.3.0",
     "gulp-ngdocs": "^0.3.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
@@ -39,6 +41,7 @@
     "pump": "^1.0.2"
   },
   "dependencies": {
-    "bulma": "^0.4.1"
+    "bulma": "^0.4.1",
+    "express": "^4.15.2"
   }
 }

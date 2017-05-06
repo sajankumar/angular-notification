@@ -1,26 +1,36 @@
 var gulp = require('gulp'),
-    sass = require('gulp-sass'),
+    less = require('gulp-less'),
     minifyJs = require('gulp-uglify'),
     minifyCss = require('gulp-clean-css'),
     pump = require('pump'),
     karma = require('karma').Server,
     sourcemaps = require('gulp-sourcemaps'),
-    docs = require('gulp-ngdocs');
+    docs = require('gulp-ngdocs'),
+    concatCss = require('gulp-concat-css');
 
 
 var devTasks = { 
-    sassProcess: function () {
-        return gulp.src('./src/build.sass')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./src/css'));
+    lessProcess: function () {
+        return gulp.src('./src/build.less')
+        .pipe(less())
+        .pipe(gulp.dest('./src/css'))
+        .pipe(gulp.dest('dist'));
+
     },
-    watchSass: function () {
-        gulp.watch('./src/*.scss', ['build:sass']);
+    watchLess: function () {
+        gulp.watch('./src/*.less', ['build:less', 'dev:css']);
     },
     unitTest: function (done) {
         new karma({
             configFile: __dirname + '/karma.conf.js',
         }, done).start();
+    },
+    css: function () {
+        return gulp.src('./src/css/build.css')
+        .pipe(gulp.dest('dist'));
+    },
+    watchjs: function () {
+        gulp.watch('./src/*.js', ['prod:compressJS']);
     }
 
 };
@@ -29,16 +39,14 @@ var prodTasks = {
     compressJS: function (cb) {
         pump([
             gulp.src('./src/*.js'),
-            minifyJs(),
+            //minifyJs(),
             gulp.dest('dist')
         ]),
         cb();
     },
     cleanCss: function () {
         return gulp.src('./src/css/build.css')
-        .pipe(sourcemaps.init())
         .pipe(minifyCss())
-        .pipe(sourcemaps.write())
         .pipe(gulp.dest('dist'));
     },
     generateDocs: function () {
@@ -46,18 +54,20 @@ var prodTasks = {
         .pipe(docs.process({html5Mode: false}))
         .pipe(gulp.dest('./docs'));
     }
+   
 };
-gulp.task('watch:sass', devTasks.watchSass);
-gulp.task('build:sass', devTasks.sassProcess);
+gulp.task('watch:less', devTasks.watchLess);
+gulp.task('build:less', devTasks.lessProcess);
+gulp.task('dev:css', devTasks.css);
 gulp.task('karma:single', devTasks.unitTest);
-
+gulp.task('watch:js', devTasks.watchjs);
 /* dev */
-gulp.task('deploy:dev', ['watch:sass', 'karma:single']);
+gulp.task('deploy:dev', ['watch:less'], devTasks.lessProcess);
+
 
 /*production build */
 gulp.task('prod:compressJS', prodTasks.compressJS);
 gulp.task('prod:cleanCss', prodTasks.cleanCss);
 gulp.task('prod:docs', prodTasks.generateDocs);
 
-gulp.task('production', ['build:sass', 'prod:cleanCss', 'prod:compressJS', 'prod:docs']);
-
+gulp.task('production', ['build:less', 'prod:compressJS', 'prod:docs', 'prod:cleanCss']);

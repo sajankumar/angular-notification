@@ -1,0 +1,30 @@
+<h1><code ng:non-bindable="">NotificationProvider</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ri.notify</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ri-notify-notificationprovider-page"><p>Simply inject this Notification on the controller</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_configure">configure(config)</h3>
+<div class="configure"><div class="configure-page"><p>This is a public method and allows you to configure the notification    </p>
+</div><h5 id="methods_configure_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>config</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="configure-page"><p>object for customization the notification </p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_notify">notify(args, category)</h3>
+<div class="notify"><h5 id="methods_notify_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>args</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="notify-page"><p>that you want to pass to the notification</p>
+</div></td></tr><tr><td>category</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="notify-page"><p>is the type of the notification that you want to pass.</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="ri-notify-notificationprovider-page"><pre class="prettyprint linenums">
+angular.module('myApp', ['ri.notify'])
+.controller('mainCtrl', function (Notification) {
+    //do you stuff    
+});
+</pre>    </p>
+</div></div>
+</div>

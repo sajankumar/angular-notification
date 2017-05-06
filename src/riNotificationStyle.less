@@ -1,0 +1,38 @@
+
+.notification {
+  width: 285px;
+  position: absolute;
+  right: 5px;
+  padding: 10px;
+  .notifyHeader {
+    display: flex;
+    .notifyTitle {
+      flex: 5;
+      margin-bottom: 10px;
+      margin-top: 5px;
+      color: #ffffff;
+    }
+    .delete {
+      height: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ffffff;
+      cursor: pointer;
+    }
+    .delete:focus {
+      outline: 0;
+    }
+  }
+  .message {
+    color: #ffffff;
+  }
+}
+.info {
+  background-color: #3273dc;
+}
+.warning {
+  background-color: #ffdd57;
+}
+.error {
+  background-color: #ff3860;
+}
