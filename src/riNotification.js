@@ -29,7 +29,9 @@
             delay: 2000,
             category: 'info',
             onClose: undefined,
-            autoClose: false
+            autoClose: false,
+            max: 5,
+            priority: 0
         };
         /**
          * @ngdoc method
@@ -62,6 +64,8 @@
             var type = this.config.category;
             var onClose = this.config.onClose;
             var autoClose = this.config.autoClose;
+            var max = this.config.max;
+            var priority = this.config.priority;
             var elements = [];
 
             /**
@@ -74,36 +78,43 @@
              *          category is the type of the notification that you want to pass.
              */
             var notify = function (args, category) {
+                console.log('constructor', typeof args);
                 var deferred = $q.defer();
                 if (typeof args !== 'object' || args === null) {
-                    args = {message: args};
+                    args = {message: args, title: category || 'Info'};
                 }
                 args.scope = args.scope ? args.scope : $rootScope;
                 args.delay = !angular.isUndefined(args.delay) ? args.delay : delay;
                 args.category = category || args.category || type || 'info';
                 args.onClose = args.onClose ? args.onClose : onClose;
                 args.autoClose = args.autoClose ? args.autoClose : autoClose;
+                args.max = args.max ? args.max : max;
+                args.priority = args.priority ? args.priority : priority;
+
 
                 var processTemplate = function () {
                     var template = $templateCache.get('notification.html');
+                    var lastElemTopPos = 0;
                     console.log('template', template);
                     var scope = args.scope.$new();
                     scope.message = $sce.trustAsHtml(args.message);
                     scope.title = $sce.trustAsHtml(args.title);
-                    scope.type = args.category;
+                    scope.type = args.category.toLowerCase();
                     scope.delay = args.delay;
                     scope.onClose = args.onClose;
 
                     var element = $compile(template)(scope);
+                    element.priority = args.priority;
                     var closeEvent = function (event) {
                         event = event.originalEvent || event;
-                        console.log(event.target, event.currentTarget);
                         if(event.type === 'click' && event.target.id === "closeBtn") {
                             if(scope.onClose) {
                                 scope.$apply(scope.onClose(element));
                             }
+                            lastElemTopPos = parseInt(element[0].offsetTop);
                             element.remove();
                             elements.splice(elements.indexOf(element), 1);
+                            position();
                             scope.$destroy();
                         }
                     };
@@ -125,22 +136,28 @@
                     }
                     
                     //elements positions.
-                    var position = function () {
-                        var elem,elemHeight,
-                        elemWidth,elemPos,elemLastPosition;
-                        for(var i = elements.length - 1; i >=0; i--) {
+                    var position = function () { 
+                        elements.sort(function (a,b) {
+                            return b.priority - a.priority;
+                        });
+                        var elem,elemHeight,lastElemPos = 10;
+                        for(var i = 0; i < elements.length; i++) {
                             elem = elements[i];
                             elemHeight = parseInt(elem[0].offsetHeight);
-                            elemWidth = parseInt(elem[0].offsetWidth);
-                            console.log(elemHeight, elemWidth, elemPos);
-
+                            if( i > 0) {
+                                var pos = elemHeight + lastElemPos;
+                                lastElemPos = pos;
+                                elem.css({'top': pos + 'px'});
+                            }else {
+                                elem.css({'top': 10 + 'px'});
+                            }
                         }
                     };
                     element.addClass(args.category);
                     angular.element(document.querySelector('body')).append(element);
                     elements.push(element);
-                    position();
                     deferred.resolve(scope);
+                    $timeout(position, 0);
                 };
                 processTemplate();
                 return deferred.promise;
@@ -160,7 +177,7 @@
     })
     .run(['$templateCache', function ($templateCache) {
         var template = '<section class="notification {{type}}">';
-        template += '<header class="notifyHeader"><h3 class="notifyTitle" ng-show="title" ng-bind-html="title"></h3>';
+        template += '<header class="notifyHeader"><h3 class="notifyTitle" ng-bind-html="title"></h3>';
         template += '<button class="delete" id="closeBtn">x</button>';
         template += '</header>';
         template += '<div class="message" ng-bind-html="message"> </div>';

@@ -14,12 +14,19 @@
 
 <script>
 	angular.module('myApp', ['ri.notify'])
-	.controller('mainCtrl', function (Notification) {
+	.controller('mainCtrl', function (Notification, $timeout) {
 		console.log(Notification)
+		Notification('I am a constructor....', 'warning');
+		//Notification({title: 'I am Main title', message: 'I am a constructor'});
+		$timeout(function(){
+			Notification.warning({message: 'I am latest, but i have to warn you', title: 'Hey!', priority: 1});
+		}, 5000);
+		$timeout(function () {
+					Notification.error({message: 'I am error', title: 'I am a title', priority: 2});
 
+				}, 8000);
 		Notification.info({message: 'I am info', title: 'I am a title'});
 		Notification.warning({message: 'I am warning', title: 'I am a title'});
-		Notification.error({message: 'I am error', title: 'I am a title'});
 	});
 
 </script>

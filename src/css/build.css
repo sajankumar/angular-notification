@@ -3,6 +3,7 @@
   position: absolute;
   right: 5px;
   padding: 10px;
+  top: 10px;
 }
 .notification .notifyHeader {
   display: flex;
