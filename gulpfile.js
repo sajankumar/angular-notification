@@ -5,16 +5,13 @@ var gulp = require('gulp'),
     pump = require('pump'),
     karma = require('karma').Server,
     sourcemaps = require('gulp-sourcemaps'),
-    docs = require('gulp-ngdocs'),
-    concatCss = require('gulp-concat-css');
-
+    docs = require('gulp-ngdocs')
 
 var devTasks = { 
     lessProcess: function () {
         return gulp.src('./src/build.less')
         .pipe(less())
         .pipe(gulp.dest('./src/css'))
-        .pipe(gulp.dest('dist'));
 
     },
     watchLess: function () {
@@ -62,7 +59,7 @@ gulp.task('dev:css', devTasks.css);
 gulp.task('karma:single', devTasks.unitTest);
 gulp.task('watch:js', devTasks.watchjs);
 /* dev */
-gulp.task('deploy:dev', ['watch:less'], devTasks.lessProcess);
+gulp.task('deploy:dev', ['watch:less', 'dev:css'], devTasks.lessProcess);
 
 
 /*production build */

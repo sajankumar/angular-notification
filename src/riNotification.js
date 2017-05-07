@@ -15,7 +15,7 @@
      * @ngdoc service
      * @name  ri.notify.NotificationProvider
      * @description
-     *  Simply inject this Notification on the controller    
+     *  Simply inject this Notification on the controller 
      */
     .provider('Notification', function () {
         this.config = {
@@ -23,7 +23,6 @@
             category: 'info',
             onClose: undefined,
             autoClose: false,
-            max: 5,
             priority: 0
         };
         /**
@@ -31,17 +30,17 @@
          * @name configure
          * @methodOf ri.notify.NotificationProvider
          * @param {object}
-         *          config object for customization the notification 
-         * @description 
+         *          config object for customization the notification
+         * @description
          *  It allows you to configure the notification service.
          * @example
          *  <pre> 
          *      angular.module('myApp', ['ri.notify'])
          *      .config(function (NotificationProvider) {
-         *            var options = {  
+         *            var options = {
          *                 delay: 90000, //after 90 seconds "info" notification will close.
-         *                 category: 'warning', // default notification type is "info". 
-         *                 onClose: true //callback will be available for all notification when it close.  
+         *                 category: 'warning', // default notification type is "info".
+         *                 onClose: true //callback will be available for all notification when it close.
          *             };
          *            NotificationProvider.configure(options);
          *      });
@@ -53,8 +52,15 @@
             };
             this.config = angular.extend({}, this.config, config);
         };
-
-        this.$get = ['$timeout', '$compile', '$templateCache', '$rootScope', '$injector', '$sce', '$q', '$window',
+        this.$get = [
+         '$timeout',
+         '$compile', 
+         '$templateCache',
+         '$rootScope',
+         '$injector',
+         '$sce',
+         '$q',
+         '$window',
         function (
             $timeout,
             $compile,
@@ -69,7 +75,6 @@
             var type = this.config.category;
             var onClose = this.config.onClose;
             var autoClose = this.config.autoClose;
-            var max = this.config.max;
             var priority = this.config.priority;
             var elements = [];
 
@@ -85,23 +90,20 @@
              *  <pre>
              *      angular.module('myApp', ['ri.notify'])
              *      .controller('mainCtrl', function ($scope, Notification) {
-             *          Notification('I am information', 'Info');
+             *          Notification({messgae: "I am notification msg", title: 'Hey'});
              *       });
              *  </pre>
-             *
-             *
              */
             var notify = function (args, category) {
                 var deferred = $q.defer();
                 if (typeof args !== 'object' || args === null) {
-                    args = {message: args, title: category || 'Info'};
+                    throw new Error('required parameters expected as an object');
                 }
                 args.scope = args.scope ? args.scope : $rootScope;
                 args.delay = !angular.isUndefined(args.delay) ? args.delay : delay;
                 args.category = category || args.category || type || 'info';
                 args.onClose = args.onClose ? args.onClose : onClose;
                 args.autoClose = args.autoClose ? args.autoClose : autoClose;
-                args.max = args.max ? args.max : max;
                 args.priority = args.priority ? args.priority : priority;
 
                 var processTemplate = function () {
@@ -128,11 +130,9 @@
                         }
                     };
                     element.bind('click', closeEvent);
-
                     if(!angular.isUndefined(args.onClose)) {
                         args.onClose = closeEvent;
                     }
-
                     if(args.autoClose && args.delay > 0) {
                         if(args.category === 'info') {
                             $timeout(function () {
@@ -144,7 +144,6 @@
                             }, args.delay);
                         }    
                     }
-                    
                     //elements positions.
                     var position = function () { 
                         elements.sort(function (a,b) {
@@ -172,36 +171,33 @@
                 processTemplate();
                 return deferred.promise;
             };
-
             /**
              * @ngdoc method
              * @name info
              * @methodOf ri.notify.NotificationProvider
              * @param {object}
-             *          params contains message, title, delay, callback. 
-             *           Alos, It is must to have message and title propery. 
+             *          params contains message, title, delay, callback.
+             *           Also, It is must to have message and title propery.
              * @description
              *  it will invoke info notification from anywhere inside your application
              * @example
              *  <pre>
              *    angular.module('myApp', ['ri.notify'])
              *    .controller('mainCtrl', function($scope, Notification) {
-             *          $scope.showNotification = function () { 
+             *          $scope.showNotification = function () {
              *            Notification.info({
              *              message: 'My notification',
-             *              title: 'Info' 
+             *              title: 'Info'
              *            });
              *          };
              *     });
-             *  </pre>  
+             *  </pre> 
              */
             notify.info = function (args) {
                 if(angular.isUndefined(args.title)) {
                     throw new Error('required title');
-                    return;
                 }else if(angular.isUndefined(args.message)) {
                     throw new Error('required message');
-                    return;
                 }
                 return this(args, 'info');
             };
@@ -210,33 +206,31 @@
              * @name warning
              * @methodOf ri.notify.NotificationProvider
              * @param {object}
-             *          params contains message, title, delay, callback. 
-             *           Alos, It is must to have message and title propery. 
+             *          params contains message, title, delay, callback.
+             *           Alos, It is must to have message and title propery.
              * @description
              *  it will invoke warning notification from anywhere inside your application
              * @example
              *  <pre>
              *    angular.module('myApp', ['ri.notify'])
              *    .controller('mainCtrl', function($scope, Notification) {
-             *          $scope.showNotification = function () { 
+             *          $scope.showNotification = function () {
              *            Notification.warning({
              *              message: 'My warning',
              *              title: 'Hey,
-             *              onClose: function (e) { 
+             *              onClose: function (e) {
              *                  //handle after you close the notification.
              *                }
              *            });
              *          };
              *     });
-             *  </pre>  
+             *  </pre>
              */
             notify.warning = function (args) {
                 if(angular.isUndefined(args.title)) {
                     throw new Error('required title');
-                    return;
                 }else if(angular.isUndefined(args.message)) {
                     throw new Error('required message');
-                    return;
                 }
                 return this(args, 'warning');
             };
@@ -245,30 +239,28 @@
              * @name error
              * @methodOf ri.notify.NotificationProvider
              * @param {object}
-             *          params contains message, title, delay, callback. 
-             *           Alos, It is must to have message and title propery. 
+             *          params contains message, title, delay, callback.
+             *           Also, It is must to have message and title propery.
              * @description
              *  it will invoke error notification from anywhere inside your application
              * @example
              *  <pre>
              *    angular.module('myApp', ['ri.notify'])
              *    .controller('mainCtrl', function($scope, Notification) {
-             *          $scope.showNotification = function () { 
+             *          $scope.showNotification = function () {
              *            Notification.error({
              *              message: 'Session expired',
-             *              title: 'Alert' 
+             *              title: 'Alert'
              *            });
              *          };
              *     });
-             *  </pre>  
+             *  </pre>
              */
             notify.error = function (args) {
                 if(angular.isUndefined(args.title)) {
                     throw new Error('required title');
-                    return;
                 }else if(angular.isUndefined(args.message)) {
                     throw new Error('required message');
-                    return;
                 }
                 return this(args, 'error');
             };
@@ -281,8 +273,7 @@
         template += '<button class="delete" id="closeBtn">x</button>';
         template += '</header>';
         template += '<div class="message"> {{message}} </div>';
-        template += '</section>';         
+        template += '</section>';
         $templateCache.put('notification.html', template);
     }]);
-
 })(angular);

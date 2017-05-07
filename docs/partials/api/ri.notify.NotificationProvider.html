@@ -4,7 +4,7 @@
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="ri-notify-notificationprovider-page"><p>Simply inject this Notification on the controller    </p>
+<div class="description"><div class="ri-notify-notificationprovider-page"><p>Simply inject this Notification on the controller </p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_notification">Notification(params, category)</h3>
@@ -14,7 +14,7 @@
 <div class="example"><div class="notification-page"><pre class="prettyprint linenums">
 angular.module('myApp', ['ri.notify'])
 .controller('mainCtrl', function ($scope, Notification) {
-    Notification('I am information', 'Info');
+    Notification({messgae: "I am notification msg", title: 'Hey'});
  });
 </pre>
 </div></div>
@@ -22,15 +22,15 @@ angular.module('myApp', ['ri.notify'])
 </li>
 <li><h3 id="methods_configure">configure(config)</h3>
 <div class="configure"><div class="configure-page"><p>It allows you to configure the notification service.</p>
-</div><h5 id="methods_configure_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>config</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="configure-page"><p>object for customization the notification </p>
+</div><h5 id="methods_configure_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>config</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="configure-page"><p>object for customization the notification</p>
 </div></td></tr></tbody></table><h4 id="methods_configure_example">Example</h4>
 <div class="example"><div class="configure-page"><pre class="prettyprint linenums"> 
 angular.module('myApp', ['ri.notify'])
 .config(function (NotificationProvider) {
-      var options = {  
+      var options = {
            delay: 90000, //after 90 seconds "info" notification will close.
-           category: 'warning', // default notification type is "info". 
-           onClose: true //callback will be available for all notification when it close.  
+           category: 'warning', // default notification type is "info".
+           onClose: true //callback will be available for all notification when it close.
        };
       NotificationProvider.configure(options);
 });
@@ -40,61 +40,61 @@ angular.module('myApp', ['ri.notify'])
 </li>
 <li><h3 id="methods_error">error(params)</h3>
 <div class="error"><div class="error-page"><p>it will invoke error notification from anywhere inside your application</p>
-</div><h5 id="methods_error_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="error-page"><p>contains message, title, delay, callback. 
-Alos, It is must to have message and title propery. </p>
+</div><h5 id="methods_error_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="error-page"><p>contains message, title, delay, callback.
+Also, It is must to have message and title propery.</p>
 </div></td></tr></tbody></table><h4 id="methods_error_example">Example</h4>
 <div class="example"><div class="error-page"><pre class="prettyprint linenums">
 angular.module('myApp', ['ri.notify'])
 .controller('mainCtrl', function($scope, Notification) {
-      $scope.showNotification = function () { 
+      $scope.showNotification = function () {
         Notification.error({
           message: 'Session expired',
-          title: 'Alert' 
+          title: 'Alert'
         });
       };
  });
-</pre>  </p>
+</pre>
 </div></div>
 </div>
 </li>
 <li><h3 id="methods_info">info(params)</h3>
 <div class="info"><div class="info-page"><p>it will invoke info notification from anywhere inside your application</p>
-</div><h5 id="methods_info_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="info-page"><p>contains message, title, delay, callback. 
-Alos, It is must to have message and title propery. </p>
+</div><h5 id="methods_info_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="info-page"><p>contains message, title, delay, callback.
+Also, It is must to have message and title propery.</p>
 </div></td></tr></tbody></table><h4 id="methods_info_example">Example</h4>
 <div class="example"><div class="info-page"><pre class="prettyprint linenums">
 angular.module('myApp', ['ri.notify'])
 .controller('mainCtrl', function($scope, Notification) {
-      $scope.showNotification = function () { 
+      $scope.showNotification = function () {
         Notification.info({
           message: 'My notification',
-          title: 'Info' 
+          title: 'Info'
         });
       };
  });
-</pre>  </p>
+</pre> </p>
 </div></div>
 </div>
 </li>
 <li><h3 id="methods_warning">warning(params)</h3>
 <div class="warning"><div class="warning-page"><p>it will invoke warning notification from anywhere inside your application</p>
-</div><h5 id="methods_warning_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="warning-page"><p>contains message, title, delay, callback. 
-Alos, It is must to have message and title propery. </p>
+</div><h5 id="methods_warning_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="warning-page"><p>contains message, title, delay, callback.
+Alos, It is must to have message and title propery.</p>
 </div></td></tr></tbody></table><h4 id="methods_warning_example">Example</h4>
 <div class="example"><div class="warning-page"><pre class="prettyprint linenums">
 angular.module('myApp', ['ri.notify'])
 .controller('mainCtrl', function($scope, Notification) {
-      $scope.showNotification = function () { 
+      $scope.showNotification = function () {
         Notification.warning({
           message: 'My warning',
           title: 'Hey,
-          onClose: function (e) { 
+          onClose: function (e) {
               //handle after you close the notification.
             }
         });
       };
  });
-</pre>  </p>
+</pre>
 </div></div>
 </div>
 </li>
