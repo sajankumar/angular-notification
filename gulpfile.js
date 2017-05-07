@@ -38,8 +38,8 @@ var devTasks = {
 var prodTasks = {
     compressJS: function (cb) {
         pump([
-            gulp.src('./src/*.js'),
-            //minifyJs(),
+            gulp.src('./src/riNotification.js'),
+            minifyJs(),
             gulp.dest('dist')
         ]),
         cb();
@@ -70,4 +70,4 @@ gulp.task('prod:compressJS', prodTasks.compressJS);
 gulp.task('prod:cleanCss', prodTasks.cleanCss);
 gulp.task('prod:docs', prodTasks.generateDocs);
 
-gulp.task('production', ['build:less', 'prod:compressJS', 'prod:docs', 'prod:cleanCss']);
+gulp.task('production', ['prod:compressJS', 'build:less', 'prod:docs', 'prod:cleanCss']);

@@ -18,8 +18,8 @@ NG_DOCS={
       "shortName": "ri.notify.NotificationProvider",
       "type": "service",
       "moduleName": "ri.notify",
-      "shortDescription": "Simply inject this Notification on the controller",
-      "keywords": "allows angular api args category config configure controller customization function inject mainctrl method module myapp notification notificationprovider notify object pass public ri service simply stuff type"
+      "shortDescription": "Simply inject this Notification on the controller    ",
+      "keywords": "$scope 90 90000 alert allows alos angular api application callback category close config configure controller customization default delay error expired function hey info inject inside invoke mainctrl message method module myapp notification notificationprovider notify object onclose options params pass propery ri seconds service session shownotification simply title true type var warning"
     }
   ],
   "apis": {
