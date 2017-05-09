@@ -99,9 +99,9 @@ describe('Simply Notification module ri.notify', function () {
         });
 
         it('should info notification close after 90 seconds delay', function () {
-            Notification.info({message:'I am info and I will close myself after 90seconds', title:'Info auto close', onClose: autoCloseNotify});
+            Notification.info({message:'I am info and I will close myself after 90seconds', 
+                title:'Info auto close', onClose: autoCloseNotify, delay: 90000});
             timeout(function () {
-                document.find('button')[0].click();
                 expect(autoCloseNotify).toHaveBeenCalled();
             }, notify.config.delay)
             expect(notify.config.delay).toEqual(mockConfig.delay);

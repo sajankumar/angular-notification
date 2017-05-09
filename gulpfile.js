@@ -67,4 +67,9 @@ gulp.task('prod:compressJS', prodTasks.compressJS);
 gulp.task('prod:cleanCss', prodTasks.cleanCss);
 gulp.task('prod:docs', prodTasks.generateDocs);
 
+gulp.task('test', ['prod:compressJS'], function () {
+    return gulp.src('./dist/riNotification.js')
+    .pipe(gulp.dest('./example/js'));
+});
+
 gulp.task('production', ['prod:compressJS', 'build:less', 'prod:docs', 'prod:cleanCss']);

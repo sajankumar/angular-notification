@@ -1,50 +1,183 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>ri.notify module demo</title>
-	<link rel="stylesheet" type="text/css" href="/example/css/build.css">
-	<style>
-		.container {
-			display: flex;
-		}
-	</style>
+    <title>ri.notify module demo</title>
+    <link rel="stylesheet" type="text/css" href="/example/css/build.css">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 80%
+
+        }
+        .column {
+            padding: 10px;
+            flex: 1;
+        }
+        .inputWrapper {
+            margin: 10px;
+        }
+        .inputWrapper input, textarea {
+            padding: 10px;
+        }
+        .inputWrapper .message {
+            width: 400px;
+        }
+        .inputWrapper button {
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            color: #ffffff;
+
+        }
+        .inputWrapper button:focus {
+            outline: none;
+        }
+        .infoBtn {
+          background-color: #3273dc;
+        }
+        .warningBtn {
+          background-color: #ffdd57;
+        }
+        .errorBtn {
+          background-color: #ff3860;
+        } 
+        .infoBtn:hover {
+            background-color: #415d8a;
+        }  
+        .warningBtn:hover {
+            background-color: #d0b139;
+        }  
+        .errorBtn:hover {
+            background-color: #d6274a;
+        }  
+    </style>
 </head>
-<body ng-app="myApp">
+<body ng-app="myApp"><h2>Angularjs simple notification module demo</h2>
+
 <div ng-controller="mainCtrl">
-	<section class="container">
-		<div class="column">
-			<div class="columns">
-				<h1></h1>
-			</div>
-			<div class="columns">
-				<h1>Notification</h1>
-			</div>
-		</div>	
-	</section>	
+    <section class="container">
+        <div class="column">
+            <hr/>
+
+            <h3>Notification with title and message</h3>
+            <div class="inputWrapper">
+                <label>give some title</label>
+                <input ng-model="notify.title" placeholder="title">
+            </div>
+            <div class="inputWrapper">
+                <label>give your message to notification</label>
+                <input type="text" ng-model="notify.message" placeholder="message" class="message" />
+            </div>
+             <hr/>
+            <h3> Notification categories </h3>
+            <div class="inputWrapper"> 
+                <button ng-click="notificationInfo();" class="infoBtn"> Info </button>
+            </div>
+            <div class="inputWrapper">
+                <button ng-click="notificationWarning();" class="warningBtn"> Warning </button>
+            </div>
+            <div class="inputWrapper">
+                <button ng-click="notificationError();" class="errorBtn"> Error </button>
+            </div>
+        </div>  
+        <div class="column">
+            <hr/>
+            <h3> Notification with callback function </h3>
+            <div class="inputWrapper">
+                <label>
+                    activate callback:
+                    <input type="checkbox" ng-model="notify.onClose">
+                </label>
+                <pre>callback active: {{notify.onClose}}</pre> 
+            </div>
+            <div class="inputWrapper">
+                <p>After your close the notification callback will execute.</p>
+                <p>Activate callback and click the Notification button to open a 
+                    notification and then close the notification</p>
+                <button ng-click="notificationCallback();" class="errorBtn"> Notification </button>
+            </div>
+                <h3>Notification auto closing with custom delay for `info` category</h3>
+            <div class="inputWrapper">
+                <label> 
+                    Set delay for `info category`
+                    <input type="number" ng-model="notify.delay">
+                </label>
+            </div>
+            <div class="inputWrapper">
+                <label> 
+                    you can also set notification based on your pirority:
+                    <input type="number" ng-model="notify.priority">
+                </label>
+                
+                    <button class="warningBtn" ng-click="notificationPriority();">
+                        Priority
+                    </button>
+                
+            </div>
+        </div>
+    </section>  
 </div>
 
 <script src="/example/js/angular.min.js"></script>
 <script src="/example/js/riNotification.js"></script>
 
 <script>
-	angular.module('myApp', ['ri.notify'])
-	.controller('mainCtrl', function (Notification, $timeout) {
-		console.log(Notification)
-		Notification({message:'I am a constructor....', title:'Cool'});
-		//Notification({title: 'I am Main title', message: 'I am a constructor'});
-		$timeout(function(){
-			Notification.warning({message: 'I am latest, but i have to warn you', title: 'Hey!', priority: 1});
-		}, 5000);
-		$timeout(function () {
-					Notification.error({message: 'I am error', title: 'I am a title', priority: 2});
+    angular.module('myApp', ['ri.notify'])
+    .controller('mainCtrl', function ($scope, Notification, $timeout) {
 
-				}, 8000);
-		//Notification.info({message: 'I am info'});
-		Notification.warning({message: 'I am warning', title: 'I am a title', onClose: function (e) {
-			console.log('am good');
-		}});
-	});
+        $scope.notify = {
+            title: 'Hey!', //default title
+            message: 'How are you doing?', //default message
+            delay: 90000, //by default
+            onClose: false,//by default
+            priority: 0 //by default
+        };
 
+        $scope.notificationInfo = function () {
+            Notification.info({
+                message: $scope.notify.message,
+                title: $scope.notify.title
+            });
+        };
+
+        $scope.notificationWarning = function () {
+           var test = Notification.warning({
+                message: $scope.notify.message,
+                title: $scope.notify.title
+            });
+        };
+
+        $scope.notificationError = function () {
+            Notification.error({
+                message: $scope.notify.message,
+                title: $scope.notify.title
+            });
+
+        };
+
+        $scope.notificationCallback = function () {
+            var onCloseHandler = function (e) {
+                alert('Notification is closing.');
+            };
+            if($scope.notify.onClose) {
+                 Notification.error({
+                    message: $scope.notify.message,
+                    title: $scope.notify.title,
+                    onClose: onCloseHandler
+                });
+            };
+        };
+
+        $scope.notificationPriority = function () {
+            Notification.warning({
+                message: $scope.notify.message,
+                title: $scope.notify.title,
+                priority: $scope.notify.priority
+            });
+        };
+    });
 </script>
 </body>
 </html>

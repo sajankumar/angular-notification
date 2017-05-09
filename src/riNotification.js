@@ -22,7 +22,6 @@
             delay: 2000,
             category: 'info',
             onClose: undefined,
-            autoClose: false,
             priority: 0
         };
         /**
@@ -58,7 +57,6 @@
          '$templateCache',
          '$rootScope',
          '$injector',
-         '$sce',
          '$q',
          '$window',
         function (
@@ -67,14 +65,12 @@
             $templateCache,
             $rootScope,
             $injector,
-            $sce,
             $q,
             $window
             ) {
             var delay = this.config.delay;
             var type = this.config.category;
             var onClose = this.config.onClose;
-            var autoClose = this.config.autoClose;
             var priority = this.config.priority;
             var elements = [];
 
@@ -103,14 +99,13 @@
                 args.delay = !angular.isUndefined(args.delay) ? args.delay : delay;
                 args.category = category || args.category || type || 'info';
                 args.onClose = args.onClose ? args.onClose : onClose;
-                args.autoClose = args.autoClose ? args.autoClose : autoClose;
                 args.priority = args.priority ? args.priority : priority;
 
                 var processTemplate = function () {
                     var template = $templateCache.get('notification.html');
                     var scope = args.scope.$new();
-                    scope.message = $sce.trustAsHtml(args.message);
-                    scope.title = $sce.trustAsHtml(args.title);
+                    scope.message = args.message;
+                    scope.title = args.title;
                     scope.type = args.category.toLowerCase();
                     scope.delay = args.delay;
                     scope.onClose = args.onClose;
@@ -133,16 +128,22 @@
                     if(!angular.isUndefined(args.onClose)) {
                         args.onClose = closeEvent;
                     }
-                    if(args.autoClose && args.delay > 0) {
-                        if(args.category === 'info') {
-                            $timeout(function () {
-                                angular.forEach(elements, function (val, index) {
-                                    if(angular.element(val).attr('class').split(" ")[1] === args.category) {
-                                        val.triggerHandler('click');
+                    if(args.delay > 0 && args.category === 'info') {
+                        $timeout(function () {
+                            var infoEle;
+                            for(var i=0; i<elements.length; i++) {
+                                infoEle = elements[i];
+                                if(angular.element(infoEle).attr('class').split(" ")[1] === args.category) {
+                                    if(scope.onClose) {
+                                        scope.$apply(scope.onClose(infoEle));
                                     }
-                                });
-                            }, args.delay);
-                        }    
+                                    infoEle.remove();
+                                    elements.splice(elements.indexOf(infoEle), 1);
+                                    position();
+                                    scope.$destroy();
+                                }
+                            }
+                        }, args.delay);    
                     }
                     //elements positions.
                     var position = function () { 
