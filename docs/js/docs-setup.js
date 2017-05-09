@@ -9,8 +9,8 @@ NG_DOCS={
       "shortName": "ri.notify",
       "type": "overview",
       "moduleName": "ri.notify",
-      "shortDescription": "ri.notify module providing the NotificationProvider for simple notifications.",
-      "keywords": "angular api module myapp notificationprovider notifications notify overview providing ri simple"
+      "shortDescription": "ri.notify is a service providing simple notifications using it own css styles.",
+      "keywords": "angular api css module myapp notifications notify overview providing ri service simple styles"
     },
     {
       "section": "api",

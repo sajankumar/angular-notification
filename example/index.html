@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>ri.notify module demo</title>
-    <link rel="stylesheet" type="text/css" href="/example/css/build.css">
+    <link rel="stylesheet" type="text/css" href="/example/css/riNotification.min.css">
     <style>
         .container {
             display: flex;
@@ -72,6 +72,7 @@
             </div>
              <hr/>
             <h3> Notification categories </h3>
+            <label>Click to stimulate notification</label>
             <div class="inputWrapper"> 
                 <button ng-click="notificationInfo();" class="infoBtn"> Info </button>
             </div>
@@ -81,6 +82,16 @@
             <div class="inputWrapper">
                 <button ng-click="notificationError();" class="errorBtn"> Error </button>
             </div>
+            <hr/>
+            <h3>Closing ``info category`` Notification after 90seconds.</h3>
+            <div class="inputWrapper">
+                <label>
+                    activate auto close:
+                    <input type="checkbox" ng-model="notify.autoclose" >
+                </label>
+                <pre>callback active: {{notify.autoclose}}</pre> 
+                <button ng-click="notificationInfo();" class="infoBtn"> Info </button>
+            </div> 
         </div>  
         <div class="column">
             <hr/>
@@ -121,7 +132,7 @@
 </div>
 
 <script src="/example/js/angular.min.js"></script>
-<script src="/example/js/riNotification.js"></script>
+<script src="/example/js/riNotification.min.js"></script>
 
 <script>
     angular.module('myApp', ['ri.notify'])
@@ -132,13 +143,18 @@
             message: 'How are you doing?', //default message
             delay: 90000, //by default
             onClose: false,//by default
-            priority: 0 //by default
+            priority: 0, //by default
+            autoclose: false
         };
 
         $scope.notificationInfo = function () {
+            if($scope.notify.autoclose === false) {
+                $scope.notify.delay = 0;
+            }
             Notification.info({
                 message: $scope.notify.message,
-                title: $scope.notify.title
+                title: $scope.notify.title,
+                delay: $scope.notify.delay
             });
         };
 

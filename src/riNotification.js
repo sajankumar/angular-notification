@@ -4,7 +4,7 @@
      * @ngdoc overview
      * @name  ri.notify
      * @description
-     *  ri.notify module providing the NotificationProvider for simple notifications.
+     *  ri.notify is a service providing simple notifications using it own css styles.
      * @example
      *  <pre>
      *     angular.module('myApp', ['ri.notify']);
