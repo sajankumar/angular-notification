@@ -1,8 +1,8 @@
-ri.Notify
+ri.notify
 =======================
 
 
-ri.Notify is a service providing simple notifications using it own css styles.
+ri.notify is a service providing simple notifications using it own css styles.
 
 ## Features
 * No dependencies except of angular.js.
