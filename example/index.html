@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>ri.notify module demo</title>
-    <link rel="stylesheet" type="text/css" href="/example/css/riNotification.min.css">
+    <link rel="stylesheet" type="text/css" href="/example/css/riNotification.css">
     <style>
         .container {
             display: flex;
@@ -132,12 +132,12 @@
 </div>
 
 <script src="/example/js/angular.min.js"></script>
-<script src="/example/js/riNotification.min.js"></script>
+<script src="/example/js/riNotification.js"></script>
 
 <script>
     angular.module('myApp', ['ri.notify'])
     .controller('mainCtrl', function ($scope, Notification, $timeout) {
-
+        Notification({message:'awesome', title:'I am cool'}, 'warning');
         $scope.notify = {
             title: 'Hey!', //default title
             message: 'How are you doing?', //default message

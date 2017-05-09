@@ -8,7 +8,7 @@ ri.Notify is a service providing simple notifications using it own css styles.
 * No dependencies except of angular.js.
 * Small size.
 * 3 message types.
-* Configure options globally py the provider
+* Configure options globally
 * Use custom options such as pirority/callback/delay
 * Specify auto close for 'info' notification 
 
@@ -20,7 +20,7 @@ After you installed nodejs you must install couple of executable files:
 npm install -g gulp-cli karma-cli 
 npm install (this will install all the development on your project directory)
 ```  
-## Run test case
+## Run unit test case
 ```bash
 npm test 
 ```
@@ -32,6 +32,10 @@ npm start
 ## Development
 ```bash
 gulp dev
+```
+## Development Build
+```bash
+gulp dev:build
 ```
 
 ## Production build
@@ -48,6 +52,8 @@ gulp production
 ## Usage
  [Heres a demo](http://localhost:3000/example/)
 
+## Design
+  you can find it inside design folder.
   
 In your html/template add 
 ```html
@@ -68,7 +74,7 @@ In your application, declare dependency injection like so..
 
 You can configure module by the provider
 ```javascript
-angular.module('notificationTest', ['ui-notification'])
+angular.module('myApp', ['ri.notify'])
     .config(function(NotificationProvider) {
         NotificationProvider.configure({
             title: 'Hey!', //default title
@@ -81,37 +87,27 @@ angular.module('notificationTest', ['ui-notification'])
 ...
 ```
 
-
 And when you need to show notifications, inject service and call it!
 
 ```javascript
-angular.module('notificationTest').controller('notificationController', function($scope, Notification) {
+angular.module('myApp').controller('notificationController', function($scope, Notification) {
  
-  Notification.primary('Primary notification');
+  Notification.info({title:'I am title header', message: 'I am a info message body'});
   // or simply..
-  Notification('Primary notification');
-  
-  // Other Options
-  // Success
-  Notification.success('Success notification');
-  
-  // Message with custom type
-  Notification({message: 'Warning notification'}, 'warning');
+  Notification({message:'awesome', title:'I am cool'}, 'warning');
+  Notification({message:'information ', title:'I am info'}, 'info');
+  Notification({message:'I am a bug', title:'ALERT!'}, 'error');
 
-  // With Title
-  Notification({message: 'Primary notification', title: 'Primary notification'});
-  
-  // Message with custom delay
-  Notification.error({message: 'Error notification 1s', delay: 1000});
-  
-  // Embed HTML within your message.....
-  Notification.success({message: 'Success notification<br>Some other <b>content</b><br><a href="https://github.com/alexcrack/angular-ui-notification">This is a link</a><br><img src="https://angularjs.org/img/AngularJS-small.png">', title: 'Html content'});
+  // warning with pirority
+  Notification.warning({title:'I am warning header', message:' I am warning message body', pirority: 1});
 
-  // Change position notification
-  Notification.error({message: 'Error Bottom Right', positionY: 'bottom', positionX: 'right'});
-  
-  // Replace message
-  Notification.error({message: 'Error notification 1s', replaceMessage: true});
+  // error with callback
+  Notification.error({title:'I am error header', message:' I am error message body', pirority: 1, onClose: function (e) {
+        alert('hey i gonna go close myself.');
+  }});
+    
+  // Message with custom delay for info type it will automatically close after 10seconds.
+  Notification.info({message: 'Error notification 1s', title: 'Auto close', delay: 10000});
 }
 ```
 
@@ -123,40 +119,13 @@ Service: "Notification"
 
 Configuration provider: "NotificationProvider"
 
-
-## Options
-
-Options can be passed to configuration provider globally or used in the current message.
-
-The options list:
-
-|       Option      |      Possible values      |         Default value          |                               Description                                |
-| ----------------- | ------------------------- | ------------------------------ | ------------------------------------------------------------------------ |
-| delay             | Any integer value         | 5000                           | The time in ms the message is showing before start fading out            |
-| startTop          | Any integer value         | 10                             | Vertical padding between messages and vertical border of the browser     |
-| startRight        | Any integer value         | 10                             | Horizontal padding between messages and horizontal border of the browser |
-| verticalSpacing   | Any integer value         | 10                             | Vertical spacing between messages                                        |
-| horizontalSpacing | Any integer value         | 10                             | Horizontal spacing between messages                                      |
-| positionX         | "right", "left", "center" | "right"                        | Horizontal position of the message                                       |
-| positionY         | "top", "bottom"           | "top"                          | Vertical position of the message                                         |
-| replaceMessage    | true, false               | false                          | If true every next appearing message replace old messages                |
-| templateUrl       | Any string                | "angular-ui-notification.html" | Custom template filename (URL)                                           |
-| onClose           | Any function              | undefined                      | Callback to execute when a notification element is closed. Callback receives the element as its argument. |
-| closeOnClick      | true, false               | true                           | If true, messages are closed on click                                    |
-| maxCount          | Any integer               | 0                              | Show only [maxCount] last messages. Old messages will be killed. 0 - do not kill |
-| priority          | Any integer               | 10                             | The highier the priority is, the higher the notification will be         |
-
-Also you can pass the "scope" option. This is an angular scope option Notification scope will be inherited from. This option can be passed only in the methods. The default value is $rootScope
-
 ## Methods
 
 #### Notification service methods
 
 |              Method name               |                   Description                   |
 |----------------------------------------|-------------------------------------------------|
-| Notification(), Notification.primary() | Show the message with bootstrap's primary class |
-| Notification.info()                    | Show the message with bootstrap's info class    |
-| Notification.success()                 | Show the message with bootstrap's success class |
-| Notification.warning()                 | Show the message with bootstrap's warn class    |
-| Notification.error()                   | Show the message with bootstrap's danger class  |
-| Notification.clearAll()                | Remove all shown messages                       |
+| Notification(options, category)        | Show the message with category                  |
+| Notification.info(options)             | Show the message with info category             |
+| Notification.warning(options)          | Show the message with warning category          |
+| Notification.error(options)            | Show the message with danger category           |

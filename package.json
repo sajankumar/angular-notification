@@ -31,6 +31,7 @@
     "gulp-less": "^3.3.0",
     "gulp-ngdocs": "^0.3.0",
     "gulp-rename": "^1.2.2",
+    "gulp-sequence": "^0.4.6",
     "gulp-uglify": "^2.1.2",
     "jasmine-core": "^2.6.1",
     "karma": "^1.7.0",

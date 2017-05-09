@@ -6,8 +6,8 @@ var gulp = require('gulp'),
     karma = require('karma').Server,
     sourcemaps = require('gulp-sourcemaps'),
     docs = require('gulp-ngdocs'),
-    rename = require('gulp-rename');
-
+    rename = require('gulp-rename'),
+    sequence = require('gulp-sequence')
 
 var devTasks = { 
     lessProcess: function () {
@@ -17,7 +17,13 @@ var devTasks = {
 
     },
     watchLess: function () {
-        gulp.watch('./src/*.less', ['build:less', 'dev:css']);
+        gulp.watch('./src/*.less', function (event) { 
+            sequence('build:less', 'dev:css', 'dev:move:css') (function (err) {
+                if(err) {
+                    console.log('err:', err);
+                }
+            });
+        });
     },
     unitTest: function (done) {
         new karma({
@@ -30,7 +36,13 @@ var devTasks = {
         .pipe(gulp.dest('dist'));
     },
     watchjs: function () {
-        gulp.watch('./src/*.js', ['dev:js']);
+        gulp.watch('./src/*.js', function (event) {
+            sequence('dev:js', 'dev:move:js') (function (err) {
+                if(err) {
+                    console.log('err:', err);
+                }
+            });
+        });
     },
     js: function () {
         return gulp.src('./src/riNotification.js')
@@ -75,15 +87,14 @@ gulp.task('dev:move:js', function () {
 });
 gulp.task('dev:move:css', function () {
     return gulp.src('./dist/riNotification.css')
-    .pipe(gulp.dest('./example/js'));
+    .pipe(gulp.dest('./example/css'));
 });
 /* dev */
-gulp.task('dev', ['watch:less', 'watch:js', 'deploy:dev']);
-gulp.task('deploy:dev', ['dev:move:js', 'dev:move:css'], devTasks.lessProcess);
-
+gulp.task('dev:build', sequence('build:less', 'dev:css', 'dev:js', 'dev:move:js', 'dev:move:css'));
+gulp.task('dev', ['watch:less', 'watch:js']);
 
 /*production build */
 gulp.task('prod:compressJS', prodTasks.compressJS);
 gulp.task('prod:cleanCss', prodTasks.cleanCss);
 gulp.task('prod:docs', prodTasks.generateDocs);
-gulp.task('production', ['prod:compressJS', 'build:less', 'prod:docs', 'prod:cleanCss']);
+gulp.task('production', sequence('prod:compressJS', 'build:less', 'prod:docs', 'prod:cleanCss'));
