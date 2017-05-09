@@ -2,6 +2,5 @@
 node_modules
 
 #dist
-dist
-
-
+dist/riNotification.css
+dist/riNotification.js

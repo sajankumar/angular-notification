@@ -218,7 +218,7 @@
              *          $scope.showNotification = function () {
              *            Notification.warning({
              *              message: 'My warning',
-             *              title: 'Hey',
+             *              title: 'Hey,
              *              onClose: function (e) {
              *                  //handle after you close the notification.
              *                }
